@@ -1,10 +1,13 @@
 import React from 'react'
+import Nav from '../components/Navi'
+import ToDoList from '../components/ToDoList'
 
+import {Container} from 'react-bootstrap'
 const Home = () => {
 	
 	return (
 		<div>
-			this is the home page
+			<ToDoList/>
 		</div>
 	)
 }
