@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import {Row,Col,Form,Button} from 'react-bootstrap'
-
+import axios from 'axios'
 
 
 const CreateToDo = () => {
@@ -23,11 +23,12 @@ const CreateToDo = () => {
 
 
 	const onSubmit = (e) => {
-		e.preventDefault()
-		console.log("Description",desc)
-		console.log("Responible",resp)
-		console.log("priority",pri)
-
+		e.preventDefault()		
+		axios.post('http://localhost:4000/todos/add',{
+			todo_description: desc,
+			todo_responsible: resp,
+			todo_priority: pri
+		})
 		setDesc('')
 		setResp('')
 		setPri('')

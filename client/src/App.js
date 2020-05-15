@@ -1,10 +1,9 @@
 import React from 'react';
 import Home from './pages/Home'
-import ToDoList from './components/ToDoList'
 import CreateToDo from './components/CreateToDo'
 import Navi from './components/Navi'
 
-import {BrowserRouter as Router,Route,Link,Switch} from 'react-router-dom'
+import {BrowserRouter as Router,Route,Switch} from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
