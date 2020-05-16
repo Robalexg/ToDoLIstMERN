@@ -51,5 +51,24 @@ module.exports = {
 
 			}
 		})
+	},
+	delete: (req,res) => {
+		let id = req.params.id
+		console.log("id",id)
+		Todo.findById(id,(err,todo) => {
+			if(!todo){
+				res.status(404).send('no data is found')
+			}else {
+
+				todo.delete()
+				.then((todo) => {
+					res.send('success')
+				})
+				.catch((err) => {
+					res.status(400).send('Update falied')
+				})
+
+			}
+		})
 	}
 }

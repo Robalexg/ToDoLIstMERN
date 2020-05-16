@@ -1,0 +1,13 @@
+.trashIcon{
+	cursor:pointer;
+	color:red;
+}
+
+.trashIcon:hover{
+	cursor:pointer;
+	color:red;
+}
+
+.editIcon{
+	cursor:pointer;
+}
