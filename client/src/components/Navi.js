@@ -8,7 +8,7 @@ const Navi = () => {
 			<Navbar.Brand>ToDoApp</Navbar.Brand>
 			<Nav> 
 				<Link to="/" className='nav-link'>To Do's</Link>
-				<Link to='/create' className='nav-link'>Create a ToDo</Link>
+				<Link to='/create' className='nav-link'>Create a To Do</Link>
 			</Nav>
 		</Navbar>
 	)

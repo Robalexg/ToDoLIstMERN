@@ -1,6 +1,7 @@
 .trashIcon{
 	cursor:pointer;
 	color:red;
+	margin-left: auto;
 }
 
 .trashIcon:hover{
@@ -9,5 +10,5 @@
 }
 
 .editIcon{
-	cursor:pointer;
+	cursor:pointer;	
 }
