@@ -1,6 +1,5 @@
 import React from 'react';
 import Home from './pages/Home'
-import CreateToDo from './components/CreateToDo'
 import Navi from './components/Navi'
 
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom'
@@ -15,7 +14,6 @@ const App = () => {
 				<Navi/>
 	    	<Switch>
 		    	<Route exact path='/' component={Home}/>	
-		    	<Route path='/create' component={CreateToDo}/>
 	    	</Switch>
 			</Container>
     </Router>

@@ -11,7 +11,6 @@ module.exports = {
 		})
 	},
 	add: (req ,res) => {
-		console.log('body',req)
 		let newTodo = new Todo(req.body)
 		newTodo
 		.save()
@@ -25,28 +24,36 @@ module.exports = {
 	getOne: (req,res) => {
 
 		let id = req.params.id
-		console.log("id",id)
 		Todo.findById(id, (err,todo) => {
 				res.send(todo)
 		})
 	},
 	update: (req,res) => {
 		let id = req.params.id
-
+		
 		Todo.findById(id,(err,todo) => {
 			if(!todo){
 				res.status(404).send('no data is found')
 			}else {
-				todo.todo_description = req.body.todo_description
-				todo.todo_responsible = req.body.todo_responsible
-				todo.todo_priority = req.body.todo_priority
+				if(req.body.title === 'description'){
 
-				todo.save()
-				.then((todo) => {
-					res.send('success')
+					todo.todo_description = req.body.contents
+				}
+				else if (req.body.title === 'responsible') {
+					todo.todo_responsible = req.body.contents
+				}
+				else if (req.body.title === 'priority') {
+					todo.todo_priority = req.body.contents
+				}
+
+
+				todo
+				.save()
+				.then(() => {
+					res.send('added successfully')
 				})
-				.catch((err) => {
-					res.status(400).send('Update falied')
+				.catch(err => {
+					res.send('failed to add new Todo')
 				})
 
 			}
@@ -54,7 +61,6 @@ module.exports = {
 	},
 	delete: (req,res) => {
 		let id = req.params.id
-		console.log("id",id)
 		Todo.findById(id,(err,todo) => {
 			if(!todo){
 				res.status(404).send('no data is found')

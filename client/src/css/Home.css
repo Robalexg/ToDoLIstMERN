@@ -1,7 +1,6 @@
 .trashIcon{
 	cursor:pointer;
-	color:red;
-	margin-left: auto;
+	margin-left: auto;	
 }
 
 .trashIcon:hover{
@@ -9,6 +8,17 @@
 	color:red;
 }
 
-.editIcon{
-	cursor:pointer;	
+.addIcon{
+	font-size: 2rem;
+	color:green;
+}
+
+.addIcon:hover{
+	color:lightblue;
+}
+
+#dropButton{
+	background:transparent !important;
+	box-shadow: none !important;
+	color:black;
 }

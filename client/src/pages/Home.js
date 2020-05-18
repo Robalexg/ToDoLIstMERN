@@ -1,11 +1,12 @@
 import React,{useState,useEffect} from 'react'
-import {Row,Col,Table,Form,Button} from 'react-bootstrap'
+import {Row,Col,Table,Form,Button,Dropdown} from 'react-bootstrap'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash,faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faTrash,faEdit,faPlusSquare } from '@fortawesome/free-solid-svg-icons'
 import '../css/Home.css'
 const Home = () => {
 	const [todos,setTodos] = useState([])
+	const [isEdit,setIsEdit] = useState(false)
 
 	useEffect(() => {
 		getTodos()
@@ -27,49 +28,105 @@ const Home = () => {
 	}
 
 	const onEdit = (e) => {
+		setIsEdit(true)
 		const id = e.currentTarget.id
 		const tag = [...document.getElementsByTagName('td')]
-
 
 		tag.map((element) => {			
 			element.setAttribute('contenteditable','true')
 		})
 
 	}
+	const onSave = (e) => {
+		setIsEdit(false)
+		const tag = [...document.getElementsByTagName('td')]
+		tag.map((element) => {			
+			element.setAttribute('contenteditable','false')
+		})
+	}
+
+	const onAdd = (e) => {
+		const newTodo = {
+			todo_description: '',
+			todo_responsible: '',
+			todo_priority:'low'
+		}
+
+		axios
+		.post('http://localhost:4000/todos/add',newTodo)
+		.then((res) => {
+			getTodos()
+		})
+	}
+
+	const onChange = (e) => {
+		const todoID = e.target.parentNode.id
+		const title = e.target.id
+		const contents = e.target.textContent
+		axios.post(`http://localhost:4000/todos/update/${todoID}`,{
+			title,
+			contents
+		}).then(() => {
+			getTodos()
+		})
+
+	}
 
 	return (
-		<Row className='my-2'>
-			<Col>
-					<Table striped bordered hover className='table-editable' >
-						<thead>
-							<tr>
-								<th>Description</th>
-								<th>Responible</th>
-								<th>Priority</th>
-							</tr>
-						</thead>
-						<tbody>
-						{
-							todos.map((todo,i) => {
-								return (
-									<tr className='text-capitalize'key={i}>
-										<td  >{todo.todo_description}</td>
-										<td >{todo.todo_responsible}</td>
-										<td>
-											<span className='d-flex'>
-												{todo.todo_priority}
-												<FontAwesomeIcon id={todo._id} className='trashIcon' onClick={onDelete} icon={faTrash}/>
-											</span>
-										</td>
-								</tr>)
-							})
-						}
-							
-						</tbody>
-					</Table>
-					<Button onClick={onEdit} >Edit</Button>
-			</Col>
-		</Row>
+		<div>
+			<Row className='my-2'>
+				<Col>
+						<Table striped bordered hover className='table-editable' >
+							<thead>
+								<tr>
+									<th>Description</th>
+									<th>Responible</th>
+									<th>Priority</th>
+								</tr>
+							</thead>
+							<tbody>
+							{
+								todos.map((todo,i) => {
+									return (
+										<tr onKeyUp={onChange} id={todo._id} className='text-capitalize' key={i}>
+											<td id='description'>{todo.todo_description}</td>
+											<td id='responsible'>{todo.todo_responsible}</td>
+											<td id='priority'>
+												<span className='d-flex'>
+													<Dropdown>
+												  <Dropdown.Toggle id="dropButton" >
+												  	{todo.todo_priority}
+												  </Dropdown.Toggle>
+												  <Dropdown.Menu  id={todo._id} onClick={onChange}>
+												    <Dropdown.Item id='priority'>High</Dropdown.Item>
+												    <Dropdown.Item id='priority'>Medium</Dropdown.Item>
+												    <Dropdown.Item id='priority'>Low</Dropdown.Item>
+												  </Dropdown.Menu>
+												</Dropdown>
+													<FontAwesomeIcon id={todo._id} className='trashIcon' onClick={onDelete} icon={faTrash}/>
+												</span>
+											</td>
+									</tr>)
+								})
+							}
+								
+							</tbody>
+						</Table>
+
+						
+				</Col>
+			</Row>
+			<Row >
+				<Col className='d-flex justify-content-between'>
+					{
+						isEdit ? <Button variant='success' onClick={onSave} >Save</Button> : <Button onClick={onEdit} >Edit</Button>
+					}
+					<span className='align-self-center addIcon' >
+						<FontAwesomeIcon  onClick={onAdd} icon={faPlusSquare}/>
+					</span>
+				</Col>
+			</Row>
+		</div>
 	)
 }
 
