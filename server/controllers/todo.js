@@ -43,6 +43,11 @@ module.exports = {
 					todo.todo_responsible = req.body.contents
 				}
 				else if (req.body.title === 'priority') {
+					let obj = {
+						title: req.body.title,
+						contents: req.body.contents
+					}
+					res.send(obj)
 					todo.todo_priority = req.body.contents
 				}
 

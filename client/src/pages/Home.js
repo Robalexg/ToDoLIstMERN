@@ -32,8 +32,10 @@ const Home = () => {
 		const id = e.currentTarget.id
 		const tag = [...document.getElementsByTagName('td')]
 
-		tag.map((element) => {			
-			element.setAttribute('contenteditable','true')
+		tag.map((element) => {		
+			if(element.id !== 'priority'){
+				element.setAttribute('contenteditable','true')
+			}	
 		})
 
 	}
@@ -66,8 +68,20 @@ const Home = () => {
 		axios.post(`http://localhost:4000/todos/update/${todoID}`,{
 			title,
 			contents
-		}).then(() => {
-			getTodos()
+		}).then((res) => {
+			const list = todos.map(x => {
+				if(x._id === todoID){
+					if(res.data.title === 'priority'){
+						x.todo_priority = res.data.contents
+					}
+				}
+				return x 
+			})
+
+			console.log(list)
+
+			setTodos(list)
+
 		})
 
 	}
@@ -89,11 +103,11 @@ const Home = () => {
 								todos.map((todo,i) => {
 									return (
 										<tr onKeyUp={onChange} id={todo._id} className='text-capitalize' key={i}>
-											<td id='description'>{todo.todo_description}</td>
+											<td className='align-self-center' id='description'>{todo.todo_description}</td>
 											<td id='responsible'>{todo.todo_responsible}</td>
 											<td id='priority'>
 												<span className='d-flex'>
-													<Dropdown>
+													<Dropdown id='dropdown'>
 												  <Dropdown.Toggle id="dropButton" >
 												  	{todo.todo_priority}
 												  </Dropdown.Toggle>
@@ -103,7 +117,7 @@ const Home = () => {
 												    <Dropdown.Item id='priority'>Low</Dropdown.Item>
 												  </Dropdown.Menu>
 												</Dropdown>
-													<FontAwesomeIcon id={todo._id} className='trashIcon' onClick={onDelete} icon={faTrash}/>
+													<FontAwesomeIcon id={todo._id} className='align-self-center trashIcon' onClick={onDelete} icon={faTrash}/>
 												</span>
 											</td>
 									</tr>)

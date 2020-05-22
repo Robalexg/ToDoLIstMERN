@@ -21,4 +21,12 @@
 	background:transparent !important;
 	box-shadow: none !important;
 	color:black;
+	margin-left: 0rem;
+	padding-left: 0rem;
+	width:10rem;
+	text-align: left;
+}
+
+#dropdown{
+
 }
