@@ -4,10 +4,14 @@ const app = express()
 const cors = require('cors')
 const PORT = 4000
 const db = require('./config/db.js')
-const routes = require('./routes/routes.js')
+const todoRoutes = require('./routes/todoRoutes.js')
+const userRoutes = require('./routes/userRoutes.js')
+
 app.use(cors())
 app.use(express.json())
-app.use('/todos',routes)
+app.use('/todos',todoRoutes)
+app.use('/user',userRoutes)
+
 
 db.once('open',() => {
 	console.log('MongoDB database connection established successful')
