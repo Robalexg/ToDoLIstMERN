@@ -1,7 +1,7 @@
 import React from 'react';
-import Home from './pages/Home'
+import Home from './components/Home'
 import Navi from './components/Navi'
-
+import Login from './components/Login'
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -14,6 +14,7 @@ const App = () => {
 				<Navi/>
 	    	<Switch>
 		    	<Route exact path='/' component={Home}/>	
+		    	<Route exact path='/login' component={Login}/>	
 	    	</Switch>
 			</Container>
     </Router>

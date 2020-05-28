@@ -77,9 +77,7 @@ const Home = () => {
 				}
 				return x 
 			})
-
-			console.log(list)
-
+			
 			setTodos(list)
 
 		})
