@@ -4,7 +4,7 @@ import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash,faEdit,faPlusSquare } from '@fortawesome/free-solid-svg-icons'
 import '../css/Home.css'
-const Home = () => {
+const Home = (props) => {
 	const [todos,setTodos] = useState([])
 	const [isEdit,setIsEdit] = useState(false)
 
@@ -14,7 +14,8 @@ const Home = () => {
 
 
 	const getTodos = () => {
-		axios.get('http://localhost:4000/todos')
+    const userID = props.match.params.id
+		axios.get(`http://localhost:4000/todos/${userID}`)
 		.then((list) => {
 			setTodos(list.data)
 		})	
@@ -48,10 +49,12 @@ const Home = () => {
 	}
 
 	const onAdd = (e) => {
+    const userID = props.match.params.id
 		const newTodo = {
-			todo_description: '',
-			todo_responsible: '',
-			todo_priority:'low'
+			description: '',
+			responsible: '',
+			priority:'low',
+      userID: userID
 		}
 
 		axios
@@ -62,17 +65,19 @@ const Home = () => {
 	}
 
 	const onChange = (e) => {
+    const userID = props.match.params.id
 		const todoID = e.target.parentNode.id
 		const title = e.target.id
 		const contents = e.target.textContent
 		axios.post(`http://localhost:4000/todos/update/${todoID}`,{
 			title,
-			contents
+			contents,
+      userID
 		}).then((res) => {
 			const list = todos.map(x => {
 				if(x._id === todoID){
 					if(res.data.title === 'priority'){
-						x.todo_priority = res.data.contents
+						x.priority = res.data.contents
 					}
 				}
 				return x 
@@ -100,14 +105,14 @@ const Home = () => {
 							{
 								todos.map((todo,i) => {
 									return (
-										<tr onKeyUp={onChange} id={todo._id} className='text-capitalize' key={i}>
-											<td className='align-self-center' id='description'>{todo.todo_description}</td>
-											<td id='responsible'>{todo.todo_responsible}</td>
+										<tr onKeyUp={onChange} id={todo._id} className='text-capitalize'  key={i}>
+											<td id='description'>{todo.description}</td>
+											<td id='responsible'>{todo.responsible}</td>
 											<td id='priority'>
 												<span className='d-flex'>
 													<Dropdown id='dropdown'>
 												  <Dropdown.Toggle id="dropButton" >
-												  	{todo.todo_priority}
+												  	{todo.priority}
 												  </Dropdown.Toggle>
 												  <Dropdown.Menu  id={todo._id} onClick={onChange}>
 												    <Dropdown.Item id='priority'>High</Dropdown.Item>

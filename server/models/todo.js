@@ -3,15 +3,19 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 let todo = new Schema({
-	todo_description: {
+	description: {
 		type: String
 	},
-	todo_responsible: {
+	responsible: {
 		type: String 
 	},
-	todo_priority: {
+	priority: {
 		type: String
-	}
+	},
+  userID: {
+    required:true,
+    type: String
+  }
 })
 
 module.exports = mongoose.model('Todo',todo)

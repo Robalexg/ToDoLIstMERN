@@ -2,11 +2,13 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 let user = new Schema({
-  name: {
-    type: String
+  email: {
+    type: String,
+    required:true
   },
   pass: {
-    type: String
+    type: String,
+    required:true
   }
 })
 

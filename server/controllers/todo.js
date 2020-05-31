@@ -1,14 +1,17 @@
 const Todo = require('../models/todo')
 
 module.exports = {
+
 	getAll: (req,res) => {
-		Todo.find((err,todos) => {
-			if(err){
-				return err
-			}else{
-				res.send(todos)
-			}
-		})
+    Todo
+    .find({userID:req.params.id})
+    .then((todos) => {
+      res.status(200).send(todos)
+    })
+    .catch(err => {
+      console.log('err',err)
+    }) 
+
 	},
 	add: (req ,res) => {
 		let newTodo = new Todo(req.body)
@@ -37,10 +40,10 @@ module.exports = {
 			}else {
 				if(req.body.title === 'description'){
 
-					todo.todo_description = req.body.contents
+					todo.description = req.body.contents
 				}
 				else if (req.body.title === 'responsible') {
-					todo.todo_responsible = req.body.contents
+					todo.responsible = req.body.contents
 				}
 				else if (req.body.title === 'priority') {
 					let obj = {
@@ -48,7 +51,7 @@ module.exports = {
 						contents: req.body.contents
 					}
 					res.send(obj)
-					todo.todo_priority = req.body.contents
+					todo.priority = req.body.contents
 				}
 
 
