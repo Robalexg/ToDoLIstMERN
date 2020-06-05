@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import {Row,Col,Card,Form,Button} from 'react-bootstrap'
-import {Link,Redirect,useHistory} from 'react-router-dom'
+import {Link,useHistory} from 'react-router-dom'
 import axios from 'axios'
 import '../css/Login.css'
 

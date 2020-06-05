@@ -9,7 +9,7 @@ module.exports = {
       res.status(200).send(todos)
     })
     .catch(err => {
-      console.log('err',err)
+      res.status(403).send(err)
     }) 
 
 	},

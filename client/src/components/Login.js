@@ -1,16 +1,23 @@
 import React,{useState} from 'react'
 import {Row,Col,Card,Form,Button} from 'react-bootstrap'
-import axios from 'axios'
 import '../css/Login.css'
 import {Link,useHistory} from 'react-router-dom'
+import {loginAction} from '../actions/userActions'
+import {useSelector, useDispatch} from 'react-redux'
 
 
 
 const Login = (props) => {
+  const dispatch = useDispatch()
   const history = useHistory()
   const [email,setEmail] = useState('')
   const [pass,setPass] = useState('')
   const [err,setErr] = useState('')
+  const login = (email,pass) => dispatch(loginAction(email,pass))
+  const user = useSelector(state => state.user)
+
+
+
   const onEmailChange =  (e) => {
     setEmail(e.target.value)
   }
@@ -21,17 +28,13 @@ const Login = (props) => {
 
   const onSub = (e) => {
     e.preventDefault()
-    axios.post('http://localhost:4000/user/login',{
-      email,
-      pass
-    }) 
-    .then(res => {
-      if(res.status === 200){
-        history.push(`/user/${res.data.id}`)
+    login(email,pass).then(res => {
+      if(res !== false){
+        history.push(`/user/${res.payload.id}`)
+      }else{
+        console.log('err')
+        setErr('Username or Password Incorrect')
       }
-    })
-    .catch(err => {
-      setErr("Email or Password are invalid")
     })
     setEmail('')
     setPass('')
@@ -47,12 +50,10 @@ const Login = (props) => {
 							<Form.Group>
 								<Form.Control required autoFocus value={email} onChange={onEmailChange} type='email' placeholder='Email Address'></Form.Control>
                 <Form.Text className='text-danger ml-2'>{err}</Form.Text>
-
 							</Form.Group>
 							<Form.Group>
 								<Form.Control required type='password' value={pass} onChange={onPassChange} placeholder='Password'></Form.Control>
                 <Form.Text className='text-danger ml-2'>{err}</Form.Text>
-
 							</Form.Group>
 							<Form.Group controlId="formBasicCheckbox">
 						    <Form.Check type="checkbox" label="Remember Password" />

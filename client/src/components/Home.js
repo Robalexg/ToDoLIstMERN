@@ -1,8 +1,8 @@
 import React,{useState,useEffect} from 'react'
-import {Row,Col,Table,Form,Button,Dropdown} from 'react-bootstrap'
+import {Row,Col,Table,Button,Dropdown} from 'react-bootstrap'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash,faEdit,faPlusSquare } from '@fortawesome/free-solid-svg-icons'
+import { faTrash,faPlusSquare } from '@fortawesome/free-solid-svg-icons'
 import '../css/Home.css'
 const Home = (props) => {
 	const [todos,setTodos] = useState([])
@@ -17,6 +17,7 @@ const Home = (props) => {
     const userID = props.match.params.id
 		axios.get(`http://localhost:4000/todos/${userID}`)
 		.then((list) => {
+      console.log('list',list)
 			setTodos(list.data)
 		})	
 	}
@@ -30,22 +31,16 @@ const Home = (props) => {
 
 	const onEdit = (e) => {
 		setIsEdit(true)
-		const id = e.currentTarget.id
 		const tag = [...document.getElementsByTagName('td')]
 
-		tag.map((element) => {		
-			if(element.id !== 'priority'){
-				element.setAttribute('contenteditable','true')
-			}	
-		})
+		tag.map(element => element.id !== 'priority' ? element.setAttribute('contenteditable','true'): '')
 
 	}
+
 	const onSave = (e) => {
 		setIsEdit(false)
 		const tag = [...document.getElementsByTagName('td')]
-		tag.map((element) => {			
-			element.setAttribute('contenteditable','false')
-		})
+		tag.map(element => element.setAttribute('contenteditable','false'))
 	}
 
 	const onAdd = (e) => {
@@ -88,6 +83,10 @@ const Home = (props) => {
 		})
 
 	}
+
+  const onSignOut = (e) => {
+    console.log("onSignOut")
+  }
 
 	return (
 		<div>
@@ -138,9 +137,15 @@ const Home = (props) => {
 					{
 						isEdit ? <Button variant='success' onClick={onSave} >Save</Button> : <Button onClick={onEdit} >Edit</Button>
 					}
+
+          <span>
+            <Button onClick={onSignOut} variant='danger'>Log Out</Button>`
+          </span>
+
 					<span className='align-self-center addIcon' >
 						<FontAwesomeIcon  onClick={onAdd} icon={faPlusSquare}/>
 					</span>
+
 				</Col>
 			</Row>
 		</div>

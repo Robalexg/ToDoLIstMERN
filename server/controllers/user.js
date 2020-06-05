@@ -2,16 +2,22 @@ const User  = require('../models/user.js')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const auth = require('../config/auth')
 
 
 module.exports = {
-  login: (req,res,next) => {
+  login: (req,res) => {
     passport.authenticate('login',{session:false}, (err,user,info) => {
       if(err || !user){
         return res.status(400).send(err)
       }
-        return res.status(200).json(user)
-    })(req,res,next)
+        
+      const accToken = auth.genToken(user)
+      const reToken = auth.genReToken(user)
+      res.cookie('token',accToken,{httpOnly:true})
+      res.cookie('reToken',reToken,{httpOnly:true})
+     return res.status(200).json({...user,accToken,reToken})
+    })(req,res)
   },
   register: (req,res,next) => {  
 
